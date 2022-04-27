@@ -1,6 +1,7 @@
-package org.acme;
+package com.redhat.quarkus.sre;
 
-import org.acme.domain.Order;
+
+import com.redhat.quarkus.sre.domain.Order;
 
 import io.quarkus.kafka.client.serialization.ObjectMapperDeserializer;
 

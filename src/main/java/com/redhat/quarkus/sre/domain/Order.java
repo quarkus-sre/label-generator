@@ -1,4 +1,4 @@
-package org.acme.domain;
+package com.redhat.quarkus.sre.domain;
 
 import java.util.List;
 
