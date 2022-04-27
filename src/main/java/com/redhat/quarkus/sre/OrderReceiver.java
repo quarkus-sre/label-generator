@@ -18,7 +18,7 @@ public class OrderReceiver {
     @Incoming("orders-in")
     @Transactional
     public void consume(Order order) {
-        System.out.println(order.getCustomer());
+        sender.send(order);
     }
     
 }
