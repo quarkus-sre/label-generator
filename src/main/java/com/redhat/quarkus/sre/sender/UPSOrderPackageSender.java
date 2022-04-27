@@ -9,8 +9,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 @ApplicationScoped
 public class UPSOrderPackageSender {
 
-    // 5s
-    @ConfigProperty(name = "ups.delay", defaultValue = "5000")
+    @ConfigProperty(name = "ups.delay", defaultValue = "2000")
     Integer delay;
 
     public void send(Order order) {

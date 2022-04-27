@@ -9,8 +9,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 @ApplicationScoped
 public class FedexOrderPackageSender {
 
-    // 20s
-    @ConfigProperty(name = "fedex.delay", defaultValue = "20000")
+    @ConfigProperty(name = "fedex.delay", defaultValue = "2000")
     Integer delay;
 
     public void send(Order order) {
