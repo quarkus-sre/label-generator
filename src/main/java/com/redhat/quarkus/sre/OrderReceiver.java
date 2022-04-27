@@ -2,7 +2,6 @@ package com.redhat.quarkus.sre;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 
 import com.redhat.quarkus.sre.domain.Order;
 import com.redhat.quarkus.sre.sender.OrderPackageSender;
@@ -16,8 +15,8 @@ public class OrderReceiver {
     private OrderPackageSender sender;
   
     @Incoming("orders-in")
-    @Transactional
     public void consume(Order order) {
+        System.out.println("OrderReceiver.consume()");
         sender.send(order);
     }
     
