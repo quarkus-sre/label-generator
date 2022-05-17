@@ -5,13 +5,16 @@ import javax.enterprise.context.ApplicationScoped;
 import com.redhat.quarkus.sre.domain.Order;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.opentracing.Traced;
 
 @ApplicationScoped
+@Traced
 public class FedexOrderPackageSender {
 
-    @ConfigProperty(name = "fedex.delay", defaultValue = "2000")
+    @ConfigProperty(name = "fedex.delay", defaultValue = "1000")
     Integer delay;
 
+    @Traced
     public void send(Order order) {
         try {
             // slow 5s
