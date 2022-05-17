@@ -1,11 +1,11 @@
-package com.redhat.quarkus.sre.sender;
+package com.redhat.quarkus.sre.label.sender;
 
 import java.util.Random;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
-import com.redhat.quarkus.sre.domain.Order;
+import com.redhat.quarkus.sre.label.domain.Order;
 
 import org.eclipse.microprofile.opentracing.Traced;
 import org.jboss.logging.Logger;

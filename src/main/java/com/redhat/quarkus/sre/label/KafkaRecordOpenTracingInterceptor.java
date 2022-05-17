@@ -1,4 +1,4 @@
-package com.redhat.quarkus.sre;
+package com.redhat.quarkus.sre.label;
 
 import java.util.Optional;
 
