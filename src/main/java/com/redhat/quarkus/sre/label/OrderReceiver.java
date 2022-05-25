@@ -15,6 +15,7 @@ import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.eclipse.microprofile.reactive.messaging.Message;
 import org.jboss.logging.Logger;
 
+import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
 import io.opentracing.Tracer;
@@ -35,13 +36,17 @@ public class OrderReceiver {
 
     private Timer timer;
 
+    private Counter counter;
+
     OrderReceiver(MeterRegistry registry) {
-        this.timer = registry.timer("sre.label-generator.tempo.consumo");
+        this.timer = registry.timer("sre.label-generator.total.time");
+        this.counter = registry.counter("sre.label-generator.orders");
     }
   
     @Incoming("orders-in")
     @Blocking(value="myworkerpool", ordered = false)
     public CompletionStage<Void> consume(Message<Order> orderMessage) {
+        counter.increment();
         Order order = orderMessage.getPayload();
         
         sender.send(order);
