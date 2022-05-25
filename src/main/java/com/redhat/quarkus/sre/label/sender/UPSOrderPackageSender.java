@@ -25,7 +25,7 @@ public class UPSOrderPackageSender {
     }
 
 
-    @Timed(value = "tempo_ups")
+    @Timed(value = "sre_label_generatortempo_ups")
     public void send(Order order) {
         try {
             Thread.sleep(delay);

@@ -25,7 +25,7 @@ public class FedexOrderPackageSender {
     }
 
     @Traced
-    @Timed(value = "tempo_fedex")
+    @Timed(value = "sre_label_generator_tempo_fedex")
     public void send(Order order) {
         try {
             // slow 5s
