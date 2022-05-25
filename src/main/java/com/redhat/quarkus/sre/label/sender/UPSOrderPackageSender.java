@@ -7,6 +7,7 @@ import com.redhat.quarkus.sre.label.domain.Order;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.opentracing.Traced;
 
+import io.micrometer.core.annotation.Timed;
 import io.micrometer.core.instrument.MeterRegistry;
 
 @ApplicationScoped
@@ -24,6 +25,7 @@ public class UPSOrderPackageSender {
     }
 
 
+    @Timed(value = "tempo_ups")
     public void send(Order order) {
         try {
             Thread.sleep(delay);

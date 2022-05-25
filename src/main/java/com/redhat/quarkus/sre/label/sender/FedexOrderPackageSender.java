@@ -1,13 +1,13 @@
 package com.redhat.quarkus.sre.label.sender;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 
 import com.redhat.quarkus.sre.label.domain.Order;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.opentracing.Traced;
 
+import io.micrometer.core.annotation.Timed;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 
@@ -25,6 +25,7 @@ public class FedexOrderPackageSender {
     }
 
     @Traced
+    @Timed(value = "tempo_fedex")
     public void send(Order order) {
         try {
             // slow 5s
