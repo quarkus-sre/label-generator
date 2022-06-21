@@ -1,4 +1,4 @@
-package com.redhat.quarkus.sre.label.domain;
+package com.redhat.quarkus.integration.label.domain;
 
 import java.time.LocalDateTime;
 import java.util.List;
