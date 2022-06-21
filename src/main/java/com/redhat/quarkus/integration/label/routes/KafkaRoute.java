@@ -30,6 +30,12 @@ public class KafkaRoute extends RouteBuilder {
   @ConfigProperty(name = "ups.service.base.endpoint")
   String upsServiceBaseEndpoint;
 
+  @ConfigProperty(name = "fedex.service.base.url")
+  String fedexServiceBaseURL;
+
+  @ConfigProperty(name = "fedex.service.base.endpoint")
+  String fedexServiceBaseEndpoint;
+
   @Override
   public void configure() throws Exception {
 
@@ -37,12 +43,19 @@ public class KafkaRoute extends RouteBuilder {
     from("kafka:{{kafka.topic.name.orders.in}}?groupId={{camel.component.kafka.configuration.group-id}}")
         .routeId("kafka-in-route")
         .log("Received Kafka: \"${body}\"")
-        // .unmarshal().json(JsonLibrary.Jackson, Order.class)
-        .to("micrometer:timer:upsTimerRequest?action=start")
-        .toD("http://" + upsServiceBaseURL + upsServiceBaseEndpoint)
-        .to("micrometer:timer:upsTimerRequest?action=stop")
-        .to("micrometer:counter:upsRequestCounter")
-        // .unmarshal().json(JsonLibrary.Jackson, Label.class)
+        .choice()
+          // Ugly. but works!
+          .when(body().contains("ups"))
+            .to("micrometer:timer:upsTimerRequest?action=start")
+            .toD("http://" + upsServiceBaseURL + upsServiceBaseEndpoint)
+            .to("micrometer:timer:upsTimerRequest?action=stop")
+            .to("micrometer:counter:upsRequestCounter")
+          .otherwise()
+            .to("micrometer:timer:fedexTimerRequest?action=start")
+            .toD("http://" + fedexServiceBaseURL + fedexServiceBaseEndpoint)
+            .to("micrometer:timer:fedexTimerRequest?action=stop")
+            .to("micrometer:counter:fedexRequestCounter")
+        .endChoice()
         .log("Received Rest: \"${body}\"")
         .end();
 
