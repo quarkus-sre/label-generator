@@ -55,7 +55,7 @@ public class KafkaRoute extends RouteBuilder {
             .toD("http://" + fedexServiceBaseURL + fedexServiceBaseEndpoint)
             .to("micrometer:timer:fedexTimerRequest?action=stop")
             .to("micrometer:counter:fedexRequestCounter")
-        .endChoice()
+        .end()
         .log("Received Rest: \"${body}\"")
         .end();
 
