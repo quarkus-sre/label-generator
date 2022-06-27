@@ -18,7 +18,6 @@ package com.redhat.quarkus.integration.label.routes;
 import javax.enterprise.context.ApplicationScoped;
 
 import org.apache.camel.builder.RouteBuilder;
-
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @ApplicationScoped
@@ -39,25 +38,31 @@ public class KafkaRoute extends RouteBuilder {
   @Override
   public void configure() throws Exception {
 
-    // kafka consumer
     from("kafka:{{kafka.topic.name.orders.in}}?groupId={{camel.component.kafka.configuration.group-id}}")
         .routeId("kafka-in-route")
         .log("Received Kafka: \"${body}\"")
+        .threads(20)
         .choice()
           // Ugly. but works!
           .when(body().contains("ups"))
+              .to("direct:upsTimerRequest")
+          .otherwise()
+              .to("direct:fedexTimerRequest")
+          .end()
+        .log("Received Rest: \"${body}\"");
+       
+       
+        from("direct:upsTimerRequest")
             .to("micrometer:timer:upsTimerRequest?action=start")
             .toD("http://" + upsServiceBaseURL + upsServiceBaseEndpoint)
             .to("micrometer:timer:upsTimerRequest?action=stop")
-            .to("micrometer:counter:upsRequestCounter")
-          .otherwise()
+            .to("micrometer:counter:upsRequestCounter");
+           
+         from("direct:fedexTimerRequest")
             .to("micrometer:timer:fedexTimerRequest?action=start")
             .toD("http://" + fedexServiceBaseURL + fedexServiceBaseEndpoint)
             .to("micrometer:timer:fedexTimerRequest?action=stop")
-            .to("micrometer:counter:fedexRequestCounter")
-        .end()
-        .log("Received Rest: \"${body}\"")
-        .end();
+            .to("micrometer:counter:fedexRequestCounter");
 
   }
 }
