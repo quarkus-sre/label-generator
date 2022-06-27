@@ -38,7 +38,7 @@ public class KafkaRoute extends RouteBuilder {
   @Override
   public void configure() throws Exception {
 
-    from("kafka:{{kafka.topic.name.orders.in}}?groupId={{camel.component.kafka.configuration.group-id}}")
+    from("kafka:{{kafka.topic.name.orders.in}}?consumersCount=20&={{camel.component.kafka.configuration.group-id}}")
         .routeId("kafka-in-route")
         .log("Received Kafka: \"${body}\"")
         .threads(20)
