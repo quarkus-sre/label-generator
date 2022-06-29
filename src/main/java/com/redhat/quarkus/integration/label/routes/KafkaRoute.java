@@ -51,18 +51,19 @@ public class KafkaRoute extends RouteBuilder {
           .end()
         .log("Received Rest: \"${body}\"");
        
-       
-        from("direct:upsTimerRequest")
-            .to("micrometer:timer:upsTimerRequest?action=start")
-            .toD("http://" + upsServiceBaseURL + upsServiceBaseEndpoint)
-            .to("micrometer:timer:upsTimerRequest?action=stop")
-            .to("micrometer:counter:upsRequestCounter");
-           
-         from("direct:fedexTimerRequest")
-            .to("micrometer:timer:fedexTimerRequest?action=start")
-            .toD("http://" + fedexServiceBaseURL + fedexServiceBaseEndpoint)
-            .to("micrometer:timer:fedexTimerRequest?action=stop")
-            .to("micrometer:counter:fedexRequestCounter");
+    from("direct:upsTimerRequest")
+        .routeId("ups-out-route")
+        .to("micrometer:timer:upsTimerRequest?action=start")
+        .toD("http://" + upsServiceBaseURL + upsServiceBaseEndpoint)
+        .to("micrometer:timer:upsTimerRequest?action=stop")
+        .to("micrometer:counter:upsRequestCounter");
+        
+    from("direct:fedexTimerRequest")
+      .routeId("fedex-out-route")
+      .to("micrometer:timer:fedexTimerRequest?action=start")
+      .toD("http://" + fedexServiceBaseURL + fedexServiceBaseEndpoint)
+      .to("micrometer:timer:fedexTimerRequest?action=stop")
+      .to("micrometer:counter:fedexRequestCounter");
 
   }
 }
