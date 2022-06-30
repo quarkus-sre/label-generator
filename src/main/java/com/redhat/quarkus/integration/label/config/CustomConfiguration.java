@@ -39,7 +39,7 @@ public class CustomConfiguration {
             public DistributionStatisticConfig configure(Meter.Id id, DistributionStatisticConfig config) {
                 if(id.getName().equalsIgnoreCase("upsTimerRequest")) {
                     return DistributionStatisticConfig.builder()
-                        .percentiles(0.5, 0.95)     // median and 95th percentile, not aggregable
+                        .percentiles(0.5, 0.90, 0.95, 0.99)     // median, 90th, 95th, 99th percentile, not aggregable
                         .percentilesHistogram(true) // histogram buckets (e.g. prometheus histogram_quantile)
                         .build()
                         .merge(config);
