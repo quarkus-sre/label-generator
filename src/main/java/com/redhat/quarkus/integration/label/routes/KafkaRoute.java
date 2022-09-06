@@ -41,7 +41,7 @@ public class KafkaRoute extends RouteBuilder {
     from("kafka:{{kafka.topic.name.orders.in}}?consumersCount=20&={{camel.component.kafka.configuration.group-id}}")
         .routeId("kafka-in-route")
         .log("Received Kafka: \"${body}\"")
-        .threads(20)
+        // .threads(20)
         .choice()
           // Ugly. but works!
           .when(body().contains("ups"))
